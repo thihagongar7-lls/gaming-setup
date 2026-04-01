@@ -1,0 +1,73 @@
+:root {
+  /* 🎮 Backgrounds */
+  --bg-dark: #0b0b0f;       /* main background (almost black) */
+  --bg-card: #1a1a1f;       /* cards / sections */
+  --bg-soft: #111217;       /* soft sections */
+
+  /* 🔴 Main Colors */
+  --primary: #ff1e1e;       /* neon red */
+  --primary-dark: #b30000;  /* deep red */
+  --accent: #ff4d4d;        /* light red glow */
+
+  /* ⚡ Extra Gaming Colors */
+  --highlight: #ffcc00;     /* yellow highlight */
+  --danger: #ff0000;        /* strong red */
+
+  /* 📝 Text */
+  --text-main: #f5f5f5;     /* main text */
+  --text-muted: #9ca3af;    /* small text */
+
+  /* 🌐 Social */
+  --youtube: #ff0000;
+  --discord: #5865f2;
+  --facebook: #1877f2;
+  --instagram: #e1306c;
+
+  --neon-red: #ff003c;
+  --neon-blue: #00f7ff;
+  --neon-purple: #a855f7;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-main);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--primary-dark);
+  border-radius: 15px;
+}
+
+.btn-gamer {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.btn-gamer:hover {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--primary),
+              0 0 20px var(--primary);
+}
+
+.title {
+  color: var(--primary);
+  text-shadow: 0 0 8px var(--primary);
+}
+
+.icon-box {
+  background: var(--bg-soft);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.glow-red {
+  text-shadow: 
+    0 0 5px var(--primary),
+    0 0 10px var(--primary),
+    0 0 20px var(--primary);
+}
