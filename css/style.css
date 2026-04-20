@@ -71,3 +71,40 @@ body {
     0 0 10px var(--primary),
     0 0 20px var(--primary);
 }
+
+.gaming-about {
+  background: radial-gradient(circle at top, #0f172a, #020617);
+}
+
+.neon-text {
+  color: #00f5ff;
+  text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff;
+}
+
+.neon-btn {
+  background: #00f5ff;
+  color: #000;
+  border: none;
+  transition: 0.3s;
+}
+
+.neon-btn:hover {
+  background: #0ff;
+  box-shadow: 0 0 15px #00f5ff;
+}
+
+.neon-badge {
+  background: #111827;
+  color: #00f5ff;
+  border: 1px solid #00f5ff;
+}
+
+.gaming-img {
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.3);
+  transition: 0.4s;
+}
+
+.gaming-img:hover {
+  transform: scale(1.05);
+}
+

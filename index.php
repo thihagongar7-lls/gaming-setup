@@ -1,46 +1,104 @@
+<?php include './config/connection.php';
+unset($_SESSION['cart']);
+?>
+<?php
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
   <!-- CSS style -->
   <link rel="stylesheet" href="css/style.css">
-
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap + Google Font (optional gaming font) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
   <style>
     body {
       padding-bottom: 3rem;
       color: var(--text-main);
       background-color: var(--bg-dark);
+      font-size: medium;
+      font-family: 'Orbitron', sans-serif;
     }
 
-    /* Carousel base class */
-    .carousel {
-      margin-bottom: 4rem;
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    /* Since positioning the image, we need to help out the caption */
-    .carousel-caption {
-      bottom: 3rem;
-      z-index: 10;
-    }
-
-    /* Declare heights because of positioning of img element */
-    .carousel-item {
-      height: 32rem;
-    }
-
-    .carousel-item>img {
+    /* VIDEO BACKGROUND */
+    .video-bg {
       position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* DARK OVERLAY */
+    .video-bg::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
       top: 0;
       left: 0;
-      min-width: 100%;
-      height: 32rem;
+      z-index: 1;
+    }
+
+    /* HERO CONTENT */
+    .hero-content {
+      z-index: 2;
+      color: #fff;
+      max-width: 700px;
+      padding: 20px;
+    }
+
+    /* TITLE */
+    .hero-title {
+      font-size: 3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .hero-title span {
+      color: #00f5ff;
+      text-shadow: 0 0 15px #00f5ff;
+    }
+
+    /* SUBTITLE */
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-top: 15px;
+    }
+
+    /* BUTTONS */
+    .hero-buttons .btn {
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .hero-buttons .btn:hover {
+      transform: scale(1.1);
     }
 
     .marketing .col-lg-4 {
@@ -109,6 +167,18 @@
       background: #00f7ff;
       color: #000;
       box-shadow: 0 0 15px #00f7ff;
+    }
+
+    /* Button */
+    .btn-neon {
+      background: #0ff;
+      color: #000;
+      border-radius: 25px;
+      padding: 6px 20px;
+    }
+
+    .btn-neon:hover {
+      background: #00cccc;
     }
 
     .carousel-item {
@@ -261,22 +331,165 @@
         0 0 40px #ff003c;
       transform: scale(1.05);
     }
+
+    .gaming-categories {
+      background: #020617;
+    }
+
+    .category-img {
+      border: 2px solid #00f5ff;
+      padding: 5px;
+      width: 50%;
+      transition: 0.3s;
+    }
+
+    .category-img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #00f5ff;
+    }
+
+    .sale {
+      background: #020617;
+    }
+
+    .gaming-card {
+      background: #0f172a;
+      border: 1px solid #00f5ff33;
+      transition: 0.3s;
+    }
+
+    .gaming-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px #00f5ff55;
+    }
+
+    .neon-text {
+      color: #00f5ff;
+      text-shadow: 0 0 10px #00f5ff;
+    }
+
+    .neon-btn {
+      background: #00f5ff;
+      color: #000;
+      border: none;
+    }
+
+    .neon-btn:hover {
+      box-shadow: 0 0 15px #00f5ff;
+    }
+
+    .products-section {
+      background: #0d0d0d;
+      color: white;
+    }
+
+    /* Card */
+    .gaming-card {
+      background: #111;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid #0ff;
+      transition: 0.3s;
+      position: relative;
+      padding: 4px;
+    }
+
+    .gaming-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 25px #0ff;
+    }
+
+    /* Image */
+    .card-img-wrapper {
+      width: 100%;
+      height: 220px;
+      /* fixed height */
+      overflow: hidden;
+      position: relative;
+      border-radius: 12px;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* important: crop nicely */
+      object-position: center;
+    }
+
+    .gaming-card:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Sale badge */
+    .badge-sale {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: red;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+
+    /* Text */
+    .product-title {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .price {
+      color: #0ff;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* Services */
+    .service-card {
+      background: #0f172a;
+      border-radius: 15px;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+    }
+
+    .icon-box {
+      font-size: 35px;
+      color: #00f5ff;
+    }
+
+    .neon-text {
+      text-shadow: 0 0 10px cyan;
+    }
+
+    /* Event */
+    .event-card {
+      background: #0f172a;
+      border-radius: 15px;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+    }
+
+    .neon-text {
+      text-shadow: 0 0 10px cyan;
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- Bootstrap + Google Font (optional gaming font) -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-  <nav class="navbar navbar-expand-lg gaming-navbar sticky-top px-4">
+  <nav class="navbar navbar-expand-lg gaming-navbar sticky-top px-2">
     <div class="container-fluid">
-
       <!-- Logo -->
-      <a class="navbar-brand text-neon" href="#">🎮 MyGame</a>
-
+      <a class="navbar-brand text-neon" href="#">MyGame</a>
       <!-- Menu -->
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
@@ -286,7 +499,7 @@
           <a class="nav-link neon-link" href="#about">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link neon-link" href="#sale">Sale</a>
+          <a class="nav-link neon-link" href="#products">Products</a>
         </li>
         <li class="nav-item">
           <a class="nav-link neon-link" href="#service">Services</a>
@@ -296,468 +509,478 @@
         </li>
       </ul>
 
-      <!-- SignIn Button -->
-      <a href="signin.php" class="btn neon-btn">Signin</a>
+      <?php if (isset($_SESSION['user'])): ?>
+        <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+          <a href="admin/dashboard.php" class="btn neon-btn me-2">Admin Panel</a>
+        <?php endif; ?>
 
-      <!-- Sign Up Button -->
-      <a href="signup.php" class="btn neon-btn">Sign Up</a>
+        <span class="me-2"><i>Hello, <?= $_SESSION['user']['name'] ?></i></span>
+        <a href="auth/logout.php" class="btn neon-btn">Logout</a>
 
-    </div>
+      <?php else: ?>
+        <a href="auth/signin.php" class="btn neon-btn me-2">Signin</a>
+        <a href="auth/signup.php" class="btn neon-btn">Signup</a>
+      <?php endif; ?>
   </nav>
 
   <main>
-
-    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+      <!-- Background Video -->
+      <div class="video-bg">
+        <video autoplay muted loop playsinline>
+          <source src="video/bg_vd.mp4" type="video/mp4">
+        </video>
       </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="img/ex1.png" alt="Loading..." />
-
-          <div class="container">
-            <div class="carousel-caption text-start">
-              <h1>Example headline.</h1>
-              <p>Some representative placeholder content for the first slide of the carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="img/ex1.png" alt="Loading..." />
-
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <p>Some representative placeholder content for the second slide of the carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="img/ex1.png" alt="Loading..." />
-
-          <div class="container">
-            <div class="carousel-caption text-end">
-              <h1>One more for good measure.</h1>
-              <p>Some representative placeholder content for the third slide of this carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-            </div>
-          </div>
+      <!-- Content -->
+      <div class="hero-content text-center">
+        <h1 class="hero-title">
+          Build Your Ultimate <span>Gaming Setup</span>
+        </h1>
+        <p class="hero-subtitle">
+          High-performance gear, RGB setups, and pro gaming accessories — all in one place.
+        </p>
+        <div class="hero-buttons mt-4">
+          <a href="#products" class="btn btn-info me-3 px-4">
+            Shop Now
+          </a>
+          <a href="#service" class="btn btn-outline-light px-4">
+            Explore Services
+          </a>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-    <hr><br><br>
-
-
+    </section>
+    <hr style="color:#00f5ff;">
 
     <!-- Marketing messaging and featurettes
-  ================================================== -->
+   ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="container marketing">
-
+    <div class="container marketing mt-10">
       <!-- Premium -->
-      <section class="about" id="about">
-        <div class="row justify-content-center text-center">
-          <div class="col-lg-8">
-            <div class="headline-block" data-aos="zoom-in" data-aos-delay="100">
-              <span class="tagline">Premium Collection</span>
-              <h1 class="main-heading">Elevate Your Everyday Style</h1>
-              <p class="lead-text">Curabitur aliquet quam id dui posuere blandit. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</p>
-              <div class="cta-group" data-aos="fade-up" data-aos-delay="200">
-                <a href="#products" class="btn-explore">Explore Collection</a>
-                <a href="#categories" class="btn-outline-explore"><i class="bi bi-grid me-2"></i>View Categories</a>
+      <section class="about gaming-about py-5" id="about">
+        <div class="container">
+          <div class="row align-items-center">
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-6" data-aos="fade-right">
+              <span class="badge neon-text neon-badge mb-3"> Gaming Setup Store</span>
+
+              <h1 class="fw-bold text-light mb-3">
+                Build Your <span class="neon-text">Ultimate Gaming Setup</span>
+              </h1>
+
+              <p class="text-main mb-4">
+                Upgrade your battlefield with high-performance gaming gear.
+                From RGB keyboards to pro-level headsets, we deliver power,
+                style, and performance for every gamer.
+              </p>
+
+              <div class="d-flex gap-3 flex-wrap">
+                <a href="#products" class="btn neon-btn px-4">
+                  Shop Now
+                </a>
+
+                <a href="#categories" class="btn btn-outline-light px-4">
+                  Browse Gear
+                </a>
+              </div>
+            </div>
+            <!-- RIGHT IMAGE -->
+            <div class="col-lg-6 text-center mt-4 mt-lg-0" data-aos="fade-left">
+              <div class="video-box">
+                <video autoplay muted loop playsinline class="img-fluid rounded-4 gaming-video">
+                  <source src="video/example.mp4" type="video/mp4">
+                </video>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <hr>
+      <hr style="color:#00f5ff;">
 
-      <!-- Three columns of text below the carousel -->
-      <section>
-        <div class="row">
-          <div class="col-lg-4">
-            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-              <title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-            </svg>
+      <!-- Categories -->
+      <section class="gaming-categories py-5">
+        <h1 class="fw-bold fst-italic text-center neon-text">Categories</h1>
+        <div class="container mt-3">
+          <div class="row text-center">
 
-            <h2>Heading</h2>
-            <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
-            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
-          <div class="col-lg-4">
-            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-              <title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-            </svg>
+            <!-- Category 1 -->
+            <div class="col-lg-4 mb-4">
+              <img src="/gamingsetup/img/p1.jpg"
+                class="rounded-circle mb-3 category-img" alt="Gaming PC">
 
-            <h2>Heading</h2>
-            <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
-          <div class="col-lg-4">
-            <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-              <title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-            </svg>
+              <h4 class="text-light neon-text ">Gaming Setup</h4>
+              <p class="text-secondary">
+                High-performance gaming PCs and complete setups for ultimate gameplay.
+              </p>
+              <a class="btn btn-outline-info" href="#">Explore</a>
+            </div>
 
-            <h2>Heading</h2>
-            <p>And lastly this, the third column of representative placeholder content.</p>
-            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
+            <!-- Category 2 -->
+            <div class="col-lg-4 mb-4">
+              <img src="/gamingsetup/img/p2.jpg"
+                class="rounded-circle mb-3 category-img" alt="Keyboard Mouse">
+
+              <h4 class="text-light neon-text ">Keyboard & Mouse</h4>
+              <p class="text-secondary">
+                Mechanical keyboards and precision gaming mice with RGB lighting.
+              </p>
+              <a class="btn btn-outline-info" href="#">Explore</a>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="col-lg-4 mb-4">
+              <img src="/gamingsetup/img/p3.jpg"
+                class="rounded-circle mb-3 category-img" alt="Headset">
+
+              <h4 class="text-light neon-text ">Headsets</h4>
+              <p class="text-secondary">
+                Immersive sound with pro-level gaming headsets and audio gear.
+              </p>
+              <a class="btn btn-outline-info" href="#">Explore</a>
+            </div>
+
+          </div>
         </div>
       </section>
-      <hr><!-- /.row -->
+      <hr style="color:#00f5ff;">
 
-      <!-- Cards -->
-      <section class="sale" id="sale">
-        <h2>Have a nice Shopping!</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
 
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div>
-                    <div class="modal-header">
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
-                    </div>
-                  </div>
+      <!-- Products / Gaming Setup -->
+      <section id="products" class="products-section py-5">
+        <div class="container">
+          <h2 class="text-center neon-text mb-5"> Hot Gaming Deals</h2>
+          <div class="row g-4">
+            <!-- Product 1 -->
+            <div class="col-lg-3 col-md-6">
+              <div class="gaming-card">
+                <div class="card-img-wrapper">
+                  <img src="img/hot1.jpg" alt="Keyboard">
+                  <span class="badge-sale">SALE</span>
                 </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <div class="card-body text-center">
+                  <h5 class="product-title neon-text ">RGB Gaming Keyboard</h5>
+                  <p class="text-secondary">Mechanical keyboard with RGB lighting.</p>
+                  <p class="price">$49.99</p>
+                  <button class="btn btn-neon w-100 add-cart">Add to Cart</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
 
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div>
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
-                    </div>
-                  </div>
+            <!-- Product 2 -->
+            <div class="col-lg-3 col-md-6">
+              <div class="gaming-card">
+                <div class="card-img-wrapper">
+                  <img src="img/hot2.jpg" alt="Mouse">
+                  <span class="badge-sale">SALE</span>
                 </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <div class="card-body text-center">
+                  <h5 class="product-title neon-text ">Gaming Mouse</h5>
+                  <p class="text-secondary">High precision gaming mouse.</p>
+                  <p class="price">$29.99</p>
+                  <button class="btn btn-neon w-100 add-cart">Add to Cart</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
 
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div>
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
-                    </div>
-                  </div>
+            <!-- Product 3 -->
+            <div class="col-lg-3 col-md-6">
+              <div class="gaming-card">
+                <div class="card-img-wrapper">
+                  <img src="img/hot3.jpg" alt="Headset">
+                  <span class="badge-sale">SALE</span>
                 </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <div class="card-body text-center">
+                  <h5 class="product-title neon-text ">Gaming Headset</h5>
+                  <p class="text-secondary">Surround sound gaming headset.</p>
+                  <p class="price">$29.99</p>
+                  <button class="btn btn-neon w-100 add-cart">Add to Cart</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
 
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div>
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
-
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div>
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
+            <!-- Add more products same style -->
+            <h2 class="text-center neon-text fw-bold text-info mb-4"> Game Store</h2>
+            <div class="container">
+              <div class="row g-4">
+                <?php
+                $stmt = $conn->query("SELECT * FROM products");
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                ?>
+                  <div class="col-md-4 col-lg-3">
+                    <div class="gaming-card">
+                      <div class="card-img-wrapper">
+                        <img src="admin/img/<?= $row['image'] ?>" width="100%" alt="loading...">
+                      </div>
+                      <h5 class="mt-2 text-info"><?= $row['name'] ?></h5>
+                      <p class="text-light small flex-grow-1">
+                        <?= $row['description'] ?? 'High-performance gaming gear built for speed, precision, and ultimate experience. Perfect for pro gamers and beginners alike.' ?>
+                      </p>
+                      <p class="price">
+                        <?= $row['price'] ?> $
+                      </p>
+                      <form action="order.php" method="POST">
+                        <input type="hidden" name="product_name" value="<?= $row['name'] ?>">
+                        <input type="hidden" name="price" value="<?= $row['price'] ?>">
+                        <button class="btn-neon w-100">
+                          Order Now
+                        </button>
+                      </form>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="img/ex1.png" class="card-img-top"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                alt="Loading..." alt="Loading...">
-
-              <div class="modal fade" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div>
-                      <h5 class="modal-title">Card Detail</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" style="background-color: orange;"></button>
-                    </div>
-
-                    <div class="modal-body">
-                      <h1>Heading</h1>
-                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, quod?</p>
-                      <a href="details.html">
-                        <button type="button" class="btn btn-primary">Details ></button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card-body" style="background-color:cornflowerblue;">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <?php } ?>
               </div>
             </div>
           </div>
         </div>
-      </section><br>
-      <hr>
+      </section>
+      <hr style="color:#00f5ff;">
+
+      <!-- Features -->
+      <section id="features" class="py-5">
+        <div class="container text-center">
+          <h2 class="mb-5 neon-text neon-text">Why Choose Us</h2>
+
+          <div class="row">
+            <div class="col-md-4">
+              <i class="bi bi-lightning-charge display-4 text-info"></i>
+              <h5>Fast Performance</h5>
+            </div>
+
+            <div class="col-md-4">
+              <i class="bi bi-shield-check display-4 text-info"></i>
+              <h5>Trusted Quality</h5>
+            </div>
+
+            <div class="col-md-4">
+              <i class="bi bi-headset display-4 text-info"></i>
+              <h5>24/7 Support</h5>
+            </div>
+          </div>
+        </div>
+      </section>
+      <hr style="color:#00f5ff;">
 
       <!-- Services -->
-      <section class="service" id="service">
-        <h2>What you think?</h2>
-        <div class="container my-3">
-          <div class="service-box p-5">
-            <h2 class="mb-4">Our Gaming Services 🎮</h2>
-            <hr>
+      <section class="service py-5" id="service">
+        <h2 class="text-center neon-text text-info fw-bold mb-5">
+          Our Gaming Services
+        </h2>
 
-            <!-- Service Item -->
-            <div class="service-item d-flex mb-4">
-              <div class="icon-box me-4">
-                <i class="bi bi-cpu"></i>
-              </div>
-              <div>
-                <h4 class="title">PC Building</h4>
-                <p>We build high-performance custom gaming PCs tailored to your needs.</p>
-              </div>
-            </div>
+        <div class="container">
+          <div class="row g-4">
 
-            <!-- Service Item -->
-            <div class="service-item d-flex mb-4">
-              <div class="icon-box me-4">
-                <i class="bi bi-controller"></i>
-              </div>
-              <div>
-                <h4 class="title">Gaming Accessories</h4>
-                <p>Top-quality keyboards, mouse, headsets and more for pro gamers.</p>
+            <!-- Service 1 -->
+            <div class="col-md-6 col-lg-3">
+              <div class="service-card p-4 text-center h-100">
+                <div class="icon-box mb-3">
+                  <i class="bi bi-cpu"></i>
+                </div>
+                <h5 class="text-info fw-bold">Custom PC Build</h5>
+                <p class="text-light small">
+                  High-performance gaming PCs built for FPS, streaming and pro-level gaming.
+                </p>
               </div>
             </div>
 
-            <!-- Service Item -->
-            <div class="service-item d-flex mb-4">
-              <div class="icon-box me-4">
-                <i class="bi bi-tools"></i>
-              </div>
-              <div>
-                <h4 class="title">Repair Service</h4>
-                <p>Fast and reliable repair service for PCs and gaming consoles.</p>
-              </div>
-            </div>
-
-            <!-- Service Item -->
-            <div class="service-item d-flex mb-4">
-              <div class="icon-box me-4">
-                <i class="bi bi-lightning"></i>
-              </div>
-              <div>
-                <h4 class="title">Performance Boost</h4>
-                <p>Optimize your system for maximum FPS and smooth gameplay.</p>
+            <!-- Service 2 -->
+            <div class="col-md-6 col-lg-3">
+              <div class="service-card p-4 text-center h-100">
+                <div class="icon-box mb-3">
+                  <i class="bi bi-controller"></i>
+                </div>
+                <h5 class="text-info fw-bold">Gaming Accessories</h5>
+                <p class="text-light small">
+                  Premium keyboards, RGB mouse, headsets and gear for ultimate gameplay.
+                </p>
               </div>
             </div>
 
-          </div>
-        </div>
-      </section><br>
+            <!-- Service 3 -->
+            <div class="col-md-6 col-lg-3">
+              <div class="service-card p-4 text-center h-100">
+                <div class="icon-box mb-3">
+                  <i class="bi bi-tools"></i>
+                </div>
+                <h5 class="text-info fw-bold">Repair & Upgrade</h5>
+                <p class="text-light small">
+                  Fast fixing, hardware upgrades and troubleshooting for gaming setups.
+                </p>
+              </div>
+            </div>
 
-      <!-- Pricing -->
-      <section>
-        <h2>Suitable Prizing?</h2>
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-              <div class="card-header py-3">
-                <h4 class="my-0 fw-normal" style="color: #000;">Free</h4>
-              </div>
-              <div class="card-body" style="color: #000;">
-                <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                  <li>10 users included</li>
-                  <li>2 GB of storage</li>
-                  <li>Email support</li>
-                  <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
+            <!-- Service 4 -->
+            <div class="col-md-6 col-lg-3">
+              <div class="service-card p-4 text-center h-100">
+                <div class="icon-box mb-3">
+                  <i class="bi bi-lightning-charge"></i>
+                </div>
+                <h5 class="text-info fw-bold">Performance Boost</h5>
+                <p class="text-light small">
+                  Optimize your system for max FPS, zero lag and smooth gameplay.
+                </p>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-              <div class="card-header py-3">
-                <h4 class="my-0 fw-normal" style="color: #000;">Pro</h4>
-              </div>
-              <div class="card-body" style="color: #000;">
-                <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                  <li>20 users included</li>
-                  <li>10 GB of storage</li>
-                  <li>Priority email support</li>
-                  <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm border-primary">
-              <div class="card-header py-3 text-white bg-primary border-primary">
-                <h4 class="my-0 fw-normal" style="color: #000;">Enterprise</h4>
-              </div>
-              <div class="card-body" style="color: #000;">
-                <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                  <li>30 users included</li>
-                  <li>15 GB of storage</li>
-                  <li>Phone and email support</li>
-                  <li>Help center access</li>
-                </ul>
-                <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
+      <hr style="color:#00f5ff;"><br>
+
+      <!-- Event -->
+      <section class="events py-5" id="events">
+        <h2 class="text-center neon-text text-info fw-bold mb-5">
+          Upcoming Gaming Events
+        </h2>
+
+        <div class="container">
+          <div class="row g-4">
+
+            <!-- Event 1 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="event-card p-3 h-100">
+                <img src="img/event1.jpg" class="img-fluid rounded mb-3" alt="">
+
+                <h5 class="text-info fw-bold"> PUBG Tournament</h5>
+                <p class="text-light small">
+                  Join our weekly PUBG tournament and win exciting gaming gear.
+                </p>
+
+                <p class="text-warning mb-2">
+                  April 25, 2026
+                </p>
+
+                <button class="btn btn-outline-info w-100">
+                  Join Event
+                </button>
+              </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="event-card p-3 h-100">
+                <img src="img/event2.jpg" class="img-fluid rounded mb-3" alt="">
+
+                <h5 class="text-info fw-bold"> Gaming Sale Day</h5>
+                <p class="text-light small">
+                  Massive discounts on all gaming accessories for 24 hours only.
+                </p>
+
+                <p class="text-warning mb-2">
+                  May 1, 2026
+                </p>
+
+                <button class="btn btn-outline-info w-100">
+                  View Deals
+                </button>
+              </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="event-card p-3 h-100">
+                <img src="img/event3.jpg" class="img-fluid rounded mb-3" alt="">
+
+                <h5 class="text-info fw-bold">New Gear Launch</h5>
+                <p class="text-light small">
+                  Experience the latest RGB gaming setup before everyone else.
+                </p>
+
+                <p class="text-warning mb-2">
+                  May 10, 2026
+                </p>
+
+                <button class="btn btn-outline-info w-100">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+      <hr style="color:#00f5ff;">
+
+      <!-- Pricing -->
+      <section class="py-5">
+        <h2 class="text-center neon-text text-info fw-bold mb-5"> Hot Gaming Deals</h2>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+
+          <!-- Starter Pack -->
+          <div class="col">
+            <div class="gaming-card p-4 h-100">
+              <h4 class="text-info fw-bold"> Starter Pack</h4>
+
+              <h1 class="text-warning my-3">
+                50,000 <small class="text-light">MMK</small>
+              </h1>
+
+              <ul class="list-unstyled text-light mb-4">
+                <li>✔ Gaming Mouse</li>
+                <li>✔ Mouse Pad</li>
+                <li>✔ Basic Headset</li>
+              </ul>
+
+              <button class="btn btn-outline-info w-100 fw-bold">
+                Buy Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Pro Gamer -->
+          <div class="col">
+            <div class="gaming-card p-4 h-100 border border-info">
+              <h4 class="text-info fw-bold"> Pro Gamer</h4>
+
+              <h1 class="text-warning my-3">
+                120,000 <small class="text-light">MMK</small>
+              </h1>
+
+              <ul class="list-unstyled text-light mb-4">
+                <li>✔ RGB Keyboard</li>
+                <li>✔ Gaming Mouse</li>
+                <li>✔ Surround Headset</li>
+                <li>✔ Large Mouse Pad</li>
+              </ul>
+
+              <button class="btn btn-info w-100 fw-bold">
+                Best Deal
+              </button>
+            </div>
+          </div>
+
+          <!-- Ultimate Setup -->
+          <div class="col">
+            <div class="gaming-card p-4 h-100">
+              <h4 class="text-info fw-bold"> Ultimate Setup</h4>
+
+              <h1 class="text-warning my-3">
+                250,000 <small class="text-light">MMK</small>
+              </h1>
+
+              <ul class="list-unstyled text-light mb-4">
+                <li>✔ Mechanical Keyboard</li>
+                <li>✔ Pro Gaming Mouse</li>
+                <li>✔ 7.1 Headset</li>
+                <li>✔ RGB Mouse Pad</li>
+                <li>✔ Gaming Stand</li>
+              </ul>
+
+              <button class="btn btn-outline-info w-100 fw-bold">
+                Go Premium
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+      <hr style="color:#00f5ff;">
 
       <!-- Map  -->
       <section class="section">
         <div class="container">
-          <h2 class="text-center mb-4">Our Location</h2>
+          <h2 class="text-center neon-text  mb-4">Our Location</h2>
           <div class="map-container">
             <iframe
               src="https://www.google.com/maps?q=Yangon&output=embed">
@@ -765,11 +988,12 @@
           </div>
         </div>
       </section>
+      <hr style="color:#00f5ff;">
 
       <!-- Contact Us -->
       <section class="section" class="contact" id="contact">
         <div class="container">
-          <h2 class="text-center mb-4">Contact Us</h2>
+          <h2 class="text-center neon-text  mb-4">Contact Us</h2>
 
           <div class="contact-box mx-auto" style="max-width:600px">
             <form>
@@ -791,18 +1015,17 @@
           </div>
         </div>
       </section><br>
+      <hr style="color:#00f5ff;">
 
     </div><!-- /.container -->
 
 
     <!-- FOOTER -->
     <footer class="container">
-      <p class="float-end"><a href="#">Back to top</a></p>
+      <p class="back_to_top float-end"><a href="#">TOP</a></p>
       <p>&copy; 2025-26 PHP project from FangGon.</p>
     </footer>
   </main>
-
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
